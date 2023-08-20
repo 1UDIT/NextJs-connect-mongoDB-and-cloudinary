@@ -65,7 +65,7 @@ export async function DELETE(req) {
                     status: "202"
                 });
         } 
- 
+  
     } catch (error) {
         // return the error
         return NextResponse.json({
