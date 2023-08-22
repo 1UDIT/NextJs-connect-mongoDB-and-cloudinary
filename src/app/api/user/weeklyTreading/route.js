@@ -159,6 +159,7 @@ export async function POST(req) {
                 title: body.title,
                 profile_img: result.secure_url,
                 cloudinary_id: result.public_id,
+                description:body.description
             });
             let myPost = await db.collection("posts").insertOne(newTask);
             // return the posts

@@ -15,7 +15,7 @@ const routes = [
     priority:'1', 
   },
   {
-    path: "/Anime",
+    path: "/Animescheduler",
     name: "Anime",
     icon: <MdOutlineSchedule />,
     priority:'2'

@@ -27,10 +27,6 @@ export default function Home() {
   const [showModal, setShowModal] = useState(false);
   const [Title, setName] = useState('');
   const [Description, setDescription] = useState('');
-  const [Studio, setStudio] = useState('');
-  const [dayset, setday] = useState('');
-  const [Time, setTime] = useState('');
-  const [Episode, setEpisode] = useState('');
   const [filePath, setfilePath] = useState();
 
 
@@ -70,6 +66,7 @@ export default function Home() {
     var bodyFormData = new FormData();
     bodyFormData.append('title', Title);
     bodyFormData.append('profile_img', base64);
+    bodyFormData.append('description', Description);
 
     axios({
       method: 'post',
@@ -109,14 +106,6 @@ export default function Home() {
              border border-gray-200  rounded py-3 px-4 mb-3 leading-tight focus:outline-none 
              focus:border-gray-500" id="grid-first-name" type="text" placeholder="Jane" value={Title} onChange={(e) => { setName(e.target.value) }} />
                         </div>
-                        <div className="w-full md:w-1/2 px-3">
-                          <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-last-name">
-                            Studio
-                          </label>
-                          <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 
-            rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name"
-                            type="text" placeholder="Doe" value={Studio} onChange={(e) => { setStudio(e.target.value) }} />
-                        </div>
                       </div>
 
                       <div className="flex flex-wrap -mx-3 mb-2">
@@ -135,45 +124,6 @@ export default function Home() {
                           <input className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none 
             dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file" name="file"
                             onChange={(event) => handleFileChange(event)} />
-                        </div>
-                        <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                          <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-state">
-                            Day
-                          </label>
-                          <div className="relative">
-                            <select className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 
-              py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state"
-                              value={dayset} onChange={(e) => { setday(e.target.value) }}>
-                              <option>Monday</option>
-                              <option>Tuesday</option>
-                              <option>Wednesday</option>
-                              <option>Thursday</option>
-                              <option>Friday</option>
-                              <option>Saturday</option>
-                              <option>Sunday</option>
-                            </select>
-                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                              <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                          <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-zip">
-                            Time
-                          </label>
-                          <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3
-             px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-zip" type="string"
-                            value={Time} onChange={(e) => { setTime(e.target.value) }} />
-                        </div>
-                      </div>
-                      <div className="flex flex-wrap -mx-3 mb-2">
-                        <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                          <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-city">
-                            Episode
-                          </label>
-                          <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 
-            leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-city" type="number" placeholder="Episode"
-                            value={Episode} onChange={(e) => { setEpisode(e.target.value) }} />
                         </div>
                       </div>
                       <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
