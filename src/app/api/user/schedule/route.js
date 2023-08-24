@@ -6,63 +6,32 @@ import Scheduler from "@/app/models/AnimeScheduler";
 
 // SeasonTotal: await model.distinct('$Season', {})
 
-export async function GET(req) {
-    try {
-        const { searchParams } = new URL(req.url);
-        const Season = searchParams.get("Season");
-        const day = searchParams.get("day");
+export async function GET() {
+    try { 
         let { db } = await connectToDatabase();
-        if (Season && day !== 'All') {
-            let posts = await db
-                .collection('schedules')
-                .find({ 'day': { '$in': [day] }, 'Season': { '$in': [Season] } })
-                .toArray();
 
-            let totalSeason = await db
-                .collection('schedules')
-                .distinct("Season");
-            console.log(Season, day)
-            // return the posts
-            return NextResponse.json(
-                {
-                    query: posts,
-                    totalSeason: totalSeason,
+        let posts = await db
+            .collection('schedules')
+            .find({})
+            .toArray();
+
+        let totalSeason = await db
+            .collection('schedules')
+            .distinct("Season"); 
+        // return the posts
+        return NextResponse.json(
+            {
+                query: posts,
+                totalSeason: totalSeason,
+            },
+            {
+                status: 200,
+                headers: {
+                    'content-type': 'application/json',
+                    'cache-control': 'public, max-age=31536000, immutable',
                 },
-                {
-                    status: 200,
-                    headers: {
-                        'content-type': 'application/json',
-                        'cache-control': 'public, max-age=31536000, immutable',
-                    },
 
-                });
-        } else {
-            let posts = await db
-                .collection('schedules')
-                .find({ 'Season': { '$in': [Season] } })
-                .toArray();
-
-            let totalSeason = await db
-                .collection('schedules')
-                .distinct("Season");
-
-            console.log(Season, day, "Else-If")
-            // return the posts
-            return NextResponse.json(
-                {
-                    query: posts,
-                    totalSeason: totalSeason,
-                },
-                {
-                    status: 200,
-                    headers: {
-                        'content-type': 'application/json',
-                        'cache-control': 'public, max-age=31536000, immutable',
-                    },
-
-                });
-        }
-
+            });
     } catch (error) {
         // return the error
         return NextResponse.json({
@@ -84,7 +53,7 @@ export async function DELETE(req) {
         let body = Object.fromEntries(formData);
         console.log(body.id, "ID");
         let posts = await db
-            .collection('weeklytreadings')
+            .collection('schedules')
             .deleteOne({ 'cloudinary_id': { '$in': [body.id] } });
 
         if (posts.deletedCount === 1) {
@@ -138,7 +107,7 @@ export async function POST(req) {
                 Studio: body.Studio,
                 Season: body.Season,
             });
-            let myPost = await db.collection("posts").insertOne(newTask);
+            let myPost = await db.collection("schedules").insertOne(newTask);
             // return the posts
             return NextResponse.json(
                 {

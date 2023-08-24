@@ -90,6 +90,8 @@ const Animescheduler = () => {
         });
     }
 
+   
+
     return (
         <main>
             <div id={styles.wrapper}>
@@ -187,7 +189,7 @@ const Animescheduler = () => {
                                                     </label>
                                                     <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 
                                                            leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-city" type="number" placeholder="Episode"
-                                                        value={Episode} onChange={(e) => { setSeason(e.target.value) }} />
+                                                        value={Season} onChange={(e) => { setSeason(e.target.value) }} />
                                                 </div>
                                             </div>
                                             <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
@@ -221,7 +223,7 @@ const Animescheduler = () => {
             <div className={styles.slider}>
 
                 {
-                    data?.message.map((value) => {
+                    data?.query.map((value) => {
                         return (
                             <ul className="max-w-full divide-y divide-gray-200 dark:divide-gray-700" key={value._id}>
                                 <li className="pb-3 sm:pb-4 pt-7">
@@ -235,6 +237,9 @@ const Animescheduler = () => {
                                             </p>
                                             <p className="text-sm  truncate  ">
                                                 {value.description}
+                                            </p>
+                                            <p className="text-sm  truncate  text-yellow-600">
+                                                {value.Season}
                                             </p>
                                         </div>
                                         <div className="inline-flex items-center text-base font-semibold text-yellow-400">
