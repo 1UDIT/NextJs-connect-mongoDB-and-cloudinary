@@ -1,28 +1,22 @@
 import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/app/dbConfig/dbConfig";
 import cloudinary from "@/app/cloudinary Database/index";
-import Scheduler from "@/app/models/AnimeScheduler";
+import SchedulerTime from "@/app/models/AnimeScheduler";
 
-
-// SeasonTotal: await model.distinct('$Season', {})
 
 export async function GET() {
-    try { 
+    try {
         let { db } = await connectToDatabase();
 
         let posts = await db
             .collection('schedules')
             .find({})
+            .sort({ published: -1 })
             .toArray();
-
-        let totalSeason = await db
-            .collection('schedules')
-            .distinct("Season"); 
         // return the posts
         return NextResponse.json(
             {
                 query: posts,
-                totalSeason: totalSeason,
             },
             {
                 status: 200,
@@ -48,30 +42,41 @@ export async function DELETE(req) {
     try {
         // connect to the database
         let { db } = await connectToDatabase();
-        // fetch the posts   
+        // fetch the posts
         let formData = await req.formData();
-        let body = Object.fromEntries(formData);
-        console.log(body.id, "ID");
-        let posts = await db
-            .collection('schedules')
-            .deleteOne({ 'cloudinary_id': { '$in': [body.id] } });
+        let body = Object.fromEntries(formData); 
+        const result = await cloudinary.uploader.destroy(body.id, {
+            folder: 'weekly'
+        });
+        console.log("body.id", body.id, "body.file.path", result.secure_url, result.public_id);
+        const cloudinary_id = result.public_id;
+        try {
 
-        if (posts.deletedCount === 1) {
-            return NextResponse.json(
-                {
-                    message: "Successfully deleted one document."
-                },
-                {
-                    status: "202"
-                });
-        } else {
-            return NextResponse.json(
-                {
-                    message: "No documents matched the query. Deleted 0 documents."
-                },
-                {
-                    status: "202"
-                });
+            let posts = await db
+                .collection('schedules')
+                .deleteOne({ 'cloudinary_id': { '$in': [body.id] } });
+
+            if (posts.deletedCount === 1) {
+                return NextResponse.json(
+                    {
+                        message: "Successfully deleted one document."
+                    },
+                    {
+                        status: "202"
+                    });
+            } else {
+                return NextResponse.json(
+                    {
+                        message: "No documents matched the query. Deleted 0 documents."
+                    },
+                    {
+                        status: "202"
+                    });
+            }
+        } catch (mongoErr) {
+            console.log(`Removing ${cloudinary_id} due to failed save`);
+            await cloudinary.uploader.destroy(cloudinary_id);
+            throw mongoErr;
         }
 
     } catch (error) {
@@ -97,7 +102,7 @@ export async function POST(req) {
         console.log("body", body.title, "body.file.path", result.secure_url, result.public_id);
         const cloudinary_id = result.public_id;
         try {
-            const newTask = new Scheduler({
+            const newTask = new SchedulerTime({
                 title: body.title,
                 profile_img: result.secure_url,
                 cloudinary_id: result.public_id,

@@ -38,7 +38,7 @@ const Animescheduler = () => {
     const { data, error, isLoading } = useSWR(
         `api/user/schedule`,
         fetcher
-    );
+    ); 
 
     const deleteList = (Id) => {
         console.log(Id);

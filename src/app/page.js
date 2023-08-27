@@ -81,6 +81,9 @@ export default function Home() {
     });
   }
 
+
+  console.log(data,"data");
+
   return (
     <main>
       <div id={styles.wrapper}>

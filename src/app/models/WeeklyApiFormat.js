@@ -25,8 +25,7 @@ const TaskSchema = new Schema(
         createdAt: {
             type: Date,
             default: Date.now
-        }
-        
+        }        
     }
 
 );
