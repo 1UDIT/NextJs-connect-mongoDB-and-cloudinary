@@ -1,12 +1,12 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import { FaAngleDown } from "react-icons/fa";
 import Link from "next/link";
 
-const navigationRoutes = ["home", "Blog", "About", "contact"];
+
 
 const menuAnimation = {
   hidden: {
@@ -41,12 +41,13 @@ const menuItemAnimation = {
 };
 
 const SidebarMenu = ({ route, showAnimation, isOpen, setIsOpen }) => {
-  const router = useRouter();
+  const pathname = usePathname()
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
     setIsOpen(true);
   };
+
 
   useEffect(() => {
     if (!isOpen) {
@@ -106,30 +107,23 @@ const SidebarMenu = ({ route, showAnimation, isOpen, setIsOpen }) => {
               );
             })} */}
 
-            {route.subRoutes.map((subRoute, i) => (
-              <motion.div variants={menuItemAnimation} key={i} custom={i}>
-                <Link to={subRoute.path} className="link" prefetch={true}
-                  aria-label={subRoute.path}
-                  rel="stylesheet preload" >
-                  <div className="icon">{subRoute.icon}</div>
-                  <motion.div className="link_text">{subRoute.name}</motion.div>
-                </Link>
-              </motion.div>
-            ))}
+            {route.subRoutes.map((subRoute, i) => {
+              console.log(subRoute.path);
+              return (
+                <motion.div variants={menuItemAnimation} key={i} custom={i}>
+                  <Link to={subRoute.path} className={pathname == subRoute.path ? "active" : "link"} prefetch={true}
+                    aria-label={subRoute.path}
+                    rel="stylesheet preload" >
+                    <div className="icon">{subRoute.icon}</div>
+                    <motion.div className="link_text">{subRoute.name}</motion.div>
+                  </Link>
+                </motion.div>
+              )
+            })}
           </motion.div>
         )}{" "}
       </AnimatePresence>
     </>
   );
 };
-
-// function NavigationLink({ href, text, router }) {
-//   const isActive = router.asPath === (href === "/home" ? "/" : href);
-//   return (
-//       <Link href={href === "/home" ? "/" : href} passHref className={`${isActive && "nav_item_active"} nav_item`}>
-//           {text}
-//       </Link>
-//   );
-// }
-
 export default SidebarMenu;

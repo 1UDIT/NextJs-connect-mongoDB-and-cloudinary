@@ -96,6 +96,15 @@ main {
   border-right: 4px solid transparent;
   transition: 0.2s cubic-bezier(0.6, -0.28, 0.735, 0.045);
 }
+.active {
+  font-size: 20px;
+  display: flex;
+  color: rgb(255, 122, 122);
+  gap: 10px;
+  padding: 5px 10px;
+  border-right: 4px solid transparent;
+  transition: 0.2s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+}
 .link:hover {
   border-right: 4px solid white;
   background: rgb(45, 51, 89);
