@@ -1,0 +1,151 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.main-container {
+  display: flex;
+  position: absolute;
+  background-color: #202020;
+  top: 0px;
+  bottom: 0px;
+  left: 0px; 
+  width: 45px;
+}
+main { 
+  background-color: rgb(10, 10, 10);
+  position: absolute;
+  top: 0px;
+  left: 44px;
+  right: 0px;     
+}
+
+.title {
+  font-size: 3rem;
+  display: grid;
+  place-items: center;
+}
+
+/* Sidebar */
+.sidebar {
+  background: rgb(0, 7, 61);
+  color: white;
+  height: 100vh;
+  overflow-y: auto;
+  z-index: 10;
+  position: fixed;
+}
+
+.top_section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 10px;
+}
+.logo {
+  font-size: 18px;
+  line-height: 0;
+}
+.bars {
+  width: 30px;
+}
+.hide {
+  display: none;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+  height: 30px;
+  padding: 10px;
+}
+.search input {
+  border: none;
+  margin-left: 10px;
+  border-radius: 5px;
+  background: rgb(238, 238, 238);
+
+  color: white;
+}
+
+.routes {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.link {
+  font-size: 20px;
+  display: flex;
+  color: white;
+  gap: 10px;
+  padding: 5px 10px;
+  border-right: 4px solid transparent;
+  transition: 0.2s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+}
+.link:hover {
+  border-right: 4px solid white;
+  background: rgb(45, 51, 89);
+  transition: 0.2s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+}
+.active {
+  border-right: 4px solid white;
+  background: rgb(45, 51, 89);
+}
+.link_text {
+  white-space: nowrap;
+  font-size: 15px;
+}
+
+.menu {
+  display: flex;
+  color: white;
+
+  padding: 5px 10px;
+  border-right: 4px solid transparent;
+  transition: 0.2s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+  justify-content: space-between;
+}
+.menu_item {
+  display: flex;
+  gap: 10px;
+}
+.menu_container {
+  display: flex;
+  flex-direction: column;
+}
+.menu_container .link {
+  padding-left: 20px;
+  border-bottom: #fff 0.5px solid;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
