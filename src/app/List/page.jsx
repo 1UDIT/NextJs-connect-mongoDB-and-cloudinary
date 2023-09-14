@@ -36,15 +36,17 @@ export default function Home() {
     const [data, setData] = useState();
     const [isLoading, setLoading] = useState(true);
 
+    console.log(process.env.BASE_Login, process.env.BASE_passWord);
+
     useEffect(() => {
         const Apicaller = async () => {
             await axios({
                 method: 'get',
                 url: `api/data/schedule`, 
                 auth: {
-                    username: "4dmin",
-                    password: "testpwd123"
-                }
+                    username: process.env.BASE_Login,
+                    password: process.env.BASE_passWord
+                  }
 
             }).then(response => {
                 setLoading(false);
@@ -109,9 +111,9 @@ export default function Home() {
             url: `api/data/schedule`,
             data: bodyFormData,
             auth: {
-                username: "4dmin",
-                password: "testpwd123"
-            }
+                username: process.env.BASE_Login,
+                password: process.env.BASE_passWord
+              }
 
         }).then(response => {
             console.log("getItems response:-", response.data, "done");
