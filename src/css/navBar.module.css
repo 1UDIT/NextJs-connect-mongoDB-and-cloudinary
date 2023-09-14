@@ -1,0 +1,18 @@
+.not_link {
+    font-size: 16px;
+    display: flex;
+    color: rgb(0, 0, 0); 
+    border-right: 4px solid transparent;
+    transition: 0.2s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+}
+.not_link:hover { 
+    color: rgb(125, 209, 248);  
+}
+
+.active_link{
+    font-size: 16px;
+    display: flex;
+    color: rgb(255, 122, 122); 
+    border-right: 4px solid transparent;
+    transition: 0.2s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+}
