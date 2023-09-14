@@ -12,7 +12,7 @@ export const authOptions = {
                 password: { label: 'test', type: 'password' },
             },
             async authorize(credentials, req) {
-                const user = { id: 1, name: 'test', password: 'test' };
+                const user = { id: 1, name: 'ADMIN', password: 'test' };
                 if (process.env.LoginUser === credentials.username && process.env.LoginPassword === credentials.password) {
                     return {
                         id: user.id,
