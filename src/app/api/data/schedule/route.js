@@ -28,9 +28,8 @@ export async function GET(req) {
                         status: 200,
                         headers: {
                             'content-type': 'application/json',
-                            'cache-control': 'public, max-age=31536000, immutable',
+                            'cache-control': 'public, max-age=315360, immutable',
                         },
-
                     });
             } catch (error) {
                 // return the error
@@ -160,7 +159,7 @@ export async function POST(req) {
                             status: '201',
                             headers: {
                                 'content-type': 'application/json',
-                                'cache-control': 'public, max-age=31536000, immutable',
+                                'cache-control': 'public, max-age=315360, immutable',
                             },
                         });
                 } catch (mongoErr) {
