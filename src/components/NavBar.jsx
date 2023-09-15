@@ -22,7 +22,7 @@ const NavBar = () => {
     const pathname = usePathname();
     const { data: session } = useSession();
     const logoutHandler = async() => {
-        await signOut({ redirect: false, callbackUrl: '/' });
+        await signOut({ redirect: false, callbackUrl: process.env.BASE_URL });
     };
   
 

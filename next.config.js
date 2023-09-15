@@ -6,6 +6,7 @@ const nextConfig = {
     env: {
         BASE_Login: process.env.userLogin,
         BASE_passWord: process.env.passWord,
+        BASE_URL: process.env.NEXTAUTH_URL, 
       }
 }
 

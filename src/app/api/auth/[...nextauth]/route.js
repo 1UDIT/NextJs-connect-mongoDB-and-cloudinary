@@ -59,19 +59,29 @@ export const authOptions = {
     //     },
     // },
 
-    // callbacks: {
-    //     async jwt({ token, user, trigger, session }) {
-    //         if (trigger === "update") {
-    //             return { ...token, ...session.user };
-    //         }
-    //         return { ...token, ...user };
-    //     },
+    callbacks: {
+        async jwt({ token, user, trigger, session }) {
+            if (trigger === "update") {
+                return { ...token, ...session.user };
+            }
+            return { ...token, ...user };
+        },
 
-    //     async session({ session, token }) {
-    //         session.user = token;
-    //         return session;
-    //     },
-    // },
+        async session({ session, token }) {
+            session.user = token;
+            return session;
+        },
+    },
+    cookies: {
+        callbackUrl: {
+          name: '__Secure-next-auth.callback-url',
+          options: {
+            sameSite: 'lax',
+            path: process.env.NEXTAUTH_URL,
+            secure: true
+          }
+        }
+      }
 
 };
 
