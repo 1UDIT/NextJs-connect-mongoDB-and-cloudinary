@@ -22,7 +22,7 @@ const NavBar = () => {
     const pathname = usePathname();
     const { data: session } = useSession();
     const logoutHandler = () => {
-        signOut({ redirect: false, callbackUrl: '/' });
+        signOut({ redirect: true, callbackUrl: '/' });
     };
  
 

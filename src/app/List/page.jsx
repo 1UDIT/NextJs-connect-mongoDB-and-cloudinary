@@ -35,8 +35,7 @@ export default function Home() {
     const [Season, setSeason] = useState();
     const [data, setData] = useState();
     const [isLoading, setLoading] = useState(true);
-
-    console.log(process.env.BASE_Login, process.env.BASE_passWord);
+ 
 
     useEffect(() => {
         const Apicaller = async () => {
@@ -56,7 +55,7 @@ export default function Home() {
             });
         }
         Apicaller();
-    }, [data])
+    }, [])
 
 
     //   const { data, error, isLoading } = useSWR(
