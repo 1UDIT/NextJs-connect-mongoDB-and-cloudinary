@@ -13,7 +13,7 @@ export const authOptions = {
             },
             async authorize(credentials, req) {
                 const user = { id: 1, name: 'ADMIN', password: 'test' };
-                if (process.env.LoginUser === credentials.username && process.env.LoginPassword === credentials.password) {
+                if (process.env.FormUser === credentials.username && process.env.FormPassword === credentials.password) {
                     return {
                         id: user.id,
                         name: user.name,
@@ -59,19 +59,19 @@ export const authOptions = {
     //     },
     // },
 
-    callbacks: {
-        async jwt({ token, user, trigger, session }) {
-            if (trigger === "update") {
-                return { ...token, ...session.user };
-            }
-            return { ...token, ...user };
-        },
+    // callbacks: {
+    //     async jwt({ token, user, trigger, session }) {
+    //         if (trigger === "update") {
+    //             return { ...token, ...session.user };
+    //         }
+    //         return { ...token, ...user };
+    //     },
 
-        async session({ session, token }) {
-            session.user = token;
-            return session;
-        },
-    },
+    //     async session({ session, token }) {
+    //         session.user = token;
+    //         return session;
+    //     },
+    // },
 
 };
 

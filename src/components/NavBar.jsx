@@ -21,14 +21,10 @@ const routes = [
 const NavBar = () => {
     const pathname = usePathname();
     const { data: session } = useSession();
-    const logoutHandler = () => {
-        signOut();
+    const logoutHandler = async() => {
+        await signOut({ redirect: false, callbackUrl: '/' });
     };
- 
-
-
-    // block py-2 pl-3 pr-4 text-gray-900 rounded  
-    // dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700
+  
 
     return (
         <nav className="bg-white border-gray-200 dark:bg-gray-900">
@@ -58,7 +54,7 @@ const NavBar = () => {
                                     <>
                                         <h1>Hi {session?.user?.name}</h1>
                                         <Link href="/" onClick={logoutHandler}>
-                                            Logout
+                                            LogOut
                                         </Link>
                                     </>
                             }
