@@ -9,9 +9,8 @@ export async function middleware(request) {
     // const isPublicPath = path === '/';
     // const ishomePath = path === '/homePage';
 
-    const token = request.cookies.get('__Secure-next-auth.session-token')?.value || undefined    
+    const token = request.cookies.get(process.env.CookiesSet)?.value || undefined 
 
-     
     if ((request.nextUrl.pathname.startsWith('/HomePage') || request.nextUrl.pathname.startsWith('/List')) && token === undefined) {
         return NextResponse.redirect(new URL('/', request.nextUrl))
     }
@@ -22,7 +21,7 @@ export async function middleware(request) {
 // See "Matching Paths" below to learn more
 export const config = {
     matcher: [
-        '/HomePage','/List'
+        '/HomePage', '/List'
     ]
 }
 

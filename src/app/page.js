@@ -22,7 +22,6 @@ export default function Home() {
       redirect: false,
     })
       .then(({ ok, error }) => {
-        console.log("hello");
         if (error === null) {
           setLoading(true)
           setError(true)
@@ -70,9 +69,11 @@ export default function Home() {
               autoComplete="false" />
           </div>
           <div className="mt-2">
-            <button onClick={onSubmit} className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600">
-              Login
-            </button>
+            <Link href="/api/auth/signin" onClick={onSubmit}>
+              <button className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600">
+                Login
+              </button>
+            </Link>
           </div>
 
           <p className="mt-4 text-sm text-center text-gray-700">

@@ -53,7 +53,7 @@ const NavBar = () => {
                                 session === null ? null :
                                     <>
                                         <h1>Hi {session?.user?.name}</h1>
-                                        <Link href="/" onClick={logoutHandler}>
+                                        <Link href="/api/auth/signout" onClick={logoutHandler}>
                                             LogOut
                                         </Link>
                                     </>
