@@ -19,12 +19,14 @@ export default function Home() {
     await signIn("credentials", {
       username: userName,
       password: password,
-      redirect: false
+      redirect: false,
     })
       .then(({ ok, error }) => {
+        console.log("hello");
         if (error === null) {
           setLoading(true)
           setError(true)
+          console.log("ok", ok);
           router.push("/HomePage");
         } else {
           setError(error)
@@ -50,8 +52,8 @@ export default function Home() {
               onChange={(e) => (setUserName(e.target.value))}
               type="UserName"
               className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
-              required 
-              autoComplete="false"/>
+              required
+              autoComplete="false" />
           </div>
           <div className="mb-2">
             <span
@@ -64,8 +66,8 @@ export default function Home() {
               onChange={(e) => (setpassword(e.target.value))}
               type="password"
               className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-400 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
-              required 
-              autoComplete="false"/>
+              required
+              autoComplete="false" />
           </div>
           <div className="mt-2">
             <button onClick={onSubmit} className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600">
