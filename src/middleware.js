@@ -4,12 +4,13 @@ import { NextRequest } from 'next/server'
 export async function middleware(request) {
     // const path = request.nextUrl.pathname;
 
-    // const secret = process.env.JWT_SECRET;
+    // const secret = next-auth.session-token;
 
+    
     // const isPublicPath = path === '/';
     // const ishomePath = path === '/homePage';
-
-    const token = request.cookies.get(process.env.CookiesSet)?.value || undefined 
+    
+    const token = request.cookies.get(process.env.CookiesSet)?.value || request.cookies.get('next-auth.session-token')?.value  
 
     if ((request.nextUrl.pathname.startsWith('/HomePage') || request.nextUrl.pathname.startsWith('/List')) && token === undefined) {
         return NextResponse.redirect(new URL('/', request.nextUrl))

@@ -99,12 +99,13 @@ export default function Home() {
         <button
           onClick={() => setShowModal(true)}
           className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button" data-modal-toggle="defaultModal">
-          add new
+          add new(weeklyTreading)
         </button>
 
         {showModal ? (
-          <>
-            <div className="flex justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+          <div className="fixed z-10 inset-0 overflow-y-auto">
+            <div className="flex justify-center items-center overflow-x-hidden min-h-screen   outline-none focus:outline-none
+                             text-center   sm:p-0">
               <div className="relative w-auto my-6 mx-auto max-w-3xl">
                 <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                   <div className="relative p-6 flex-auto">
@@ -160,17 +161,17 @@ export default function Home() {
                 </div>
               </div>
             </div>
-          </>
+          </div>
         ) : null}
 
       </div>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-4 sm:grid-cols-2 ">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-4 sm:grid-cols-2  w-full">
         {
           isLoading !== false ? <h1>Loading</h1> :
             data.query
               ?.map((Item) => {
                 return (
-                  <div className="relative mt-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md" key={Item._id}>
+                  <div className="relative mx-6  mt-6 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md" key={Item._id}>
                     <a className="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl" href="#">
                       <Image
                         className="object-cover"

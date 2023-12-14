@@ -12,8 +12,8 @@ export const authOptions = {
                 password: { label: 'test', type: 'password' },
             },
             async authorize(credentials, req) {
-                const user = { id: 1, name: 'ADMIN', password: 'test' };
-                if (process.env.FormUser === credentials.username && process.env.FormPassword === credentials.password) {
+                const user = { id: 1, name: 'Admin', password: 'test' }; 
+                if (process.env.BASE_Login === credentials.username && process.env.BASE_passWord === credentials.password) {
                     return {
                         id: user.id,
                         name: user.name,

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useSession, getSession, signOut } from "next-auth/react"
 import { usePathname } from "next/navigation";
 import styles from '@/css/navBar.module.css'
+import { useState } from "react";
 
 const routes = [
     {
@@ -16,15 +17,21 @@ const routes = [
         name: "Anime",
         priority: '2'
     },
+    {
+        path: "/News",
+        name: "NewsList",
+        priority: '3'
+    },
 ];
 
 const NavBar = () => {
+    const [isNavExpanded, setIsNavExpanded] = useState(false)
     const pathname = usePathname();
     const { data: session } = useSession();
-    const logoutHandler = async() => {
+    const logoutHandler = async () => {
         await signOut({ redirect: true, callbackUrl: '/' });
     };
-  
+
 
     return (
         <nav className="bg-white border-gray-200 dark:bg-gray-900">
@@ -36,6 +43,13 @@ const NavBar = () => {
                         </svg>
                         <span className="sr-only">Search</span>
                     </button> */}
+                    <button data-collapse-toggle="navbar-search" type="button" onClick={() => { setIsNavExpanded(!isNavExpanded) }}
+                        className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-search" aria-expanded="false">
+                        <span className="sr-only">Open main menu</span>
+                        <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h15M1 7h15M1 13h15" />
+                        </svg>
+                    </button>
                     <div className="relative hidden md:block">
                         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                             <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -47,7 +61,7 @@ const NavBar = () => {
                             className="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 
                          dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search..." />
                     </div>
-                    <div className="relative hidden md:block">
+                    <div className="relative   md:block">
                         <div className="ml-auto flex gap-2 block py-2 pl-3 pr-4 flex items-center font-bold text-slate-900">
                             {
                                 session === null ? null :
@@ -60,14 +74,9 @@ const NavBar = () => {
                             }
                         </div>
                     </div>
-                    <button data-collapse-toggle="navbar-search" type="button" className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-search" aria-expanded="false">
-                        <span className="sr-only">Open main menu</span>
-                        <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h15M1 7h15M1 13h15" />
-                        </svg>
-                    </button>
+
                 </div>
-                <div className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-search">
+                <div className={`w-full block flex-grow lg:flex lg:items-center lg:w-auto ${isNavExpanded ? "block" : "hidden"}`} id="navbar-search">
                     <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                         {
                             routes?.map((route) => {

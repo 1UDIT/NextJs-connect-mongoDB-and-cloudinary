@@ -8,49 +8,33 @@ import styles from "@/css/style.css";
 import Image from "next/image";
 
 
-
+const fetcher = async (url) => {
+    return await axios
+        .get(url, {
+            auth: {
+                username: process.env.BASE_Login,
+                password: process.env.BASE_passWord
+            }
+        })
+        .then((res) => res.data)
+        .catch((error) => {
+            if (error.response.status !== 409) throw error;
+        });
+};
 
 
 export default function Home() {
+
     const [showModal, setShowModal] = useState(false);
     const [Title, setName] = useState('');
     const [Description, setDescription] = useState('');
-    const [Studio, setStudio] = useState('');
-    const [day, setday] = useState('Monday');
-    const [Time, setTime] = useState('');
-    const [Episode, setEpisode] = useState('');
     const [filePath, setfilePath] = useState();
-    const [Season, setSeason] = useState();
-    const [SeasonType, setSeasonType] = useState();
-    const [data, setData] = useState();
-    const [isLoading, setLoading] = useState(true);
 
 
-    useEffect(() => {
-        const Apicaller = async () => {
-            await axios({
-                method: 'get',
-                url: `api/data/schedule`,
-                auth: {
-                    username: process.env.BASE_Login,
-                    password: process.env.BASE_passWord
-                }
-
-            }).then(response => {
-                setLoading(false);
-                setData(response.data);
-            }).catch(error => {
-                console.log("Error In Post Data getItems", error);
-            });
-        }
-        Apicaller();
-    }, [])
-
-
-    //   const { data, error, isLoading } = useSWR(
-    //     `/api/data/weeklyTreading`,
-    //     fetcher
-    //   );
+    const { data, error, isLoading } = useSWR(
+        `api/data/News`,
+        fetcher
+    );
 
 
     const deleteList = (Id) => {
@@ -62,7 +46,7 @@ export default function Home() {
 
         axios({
             method: 'delete',
-            url: `api/data/schedule`,
+            url: `api/data/News`,
             data: bodyFormData,
             auth: {
                 username: process.env.BASE_Login,
@@ -83,21 +67,16 @@ export default function Home() {
     };
 
     const submitData = async (event) => {
-        event.preventDefault();
+        event.preventDefault(); 
         const base64 = await convertToBase64(filePath);
         var bodyFormData = new FormData();
         bodyFormData.append('title', Title);
         bodyFormData.append('profile_img', base64);
         bodyFormData.append('description', Description);
-        bodyFormData.append('day', dayset);
-        bodyFormData.append('Time', Time);
-        bodyFormData.append('Studio', Studio);
-        bodyFormData.append('Season', Season);
-        bodyFormData.append('SeasonType', SeasonType);
 
-        await axios({
+        axios({
             method: 'post',
-            url: `api/data/schedule`,
+            url: `api/data/News`,
             data: bodyFormData,
             auth: {
                 username: process.env.BASE_Login,
@@ -120,7 +99,7 @@ export default function Home() {
                 <button
                     onClick={() => setShowModal(true)}
                     className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button" data-modal-toggle="defaultModal">
-                    add new
+                    add new(Add News)
                 </button>
 
                 {showModal ? (
@@ -130,8 +109,8 @@ export default function Home() {
                             <div className="relative w-auto my-6 mx-auto max-w-3xl">
                                 <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                                     <div className="relative p-6 flex-auto">
-                                        <form className="w-full max-w-sm ">
-                                            <div className="flex flex-wrap -mx-3 mb-1.5">
+                                        <form className="w-full max-w-lg">
+                                            <div className="flex flex-wrap -mx-3 mb-6">
                                                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                                                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-first-name">
                                                         Title
@@ -140,80 +119,25 @@ export default function Home() {
              border border-gray-200  rounded py-3 px-4 mb-3 leading-tight focus:outline-none 
              focus:border-gray-500" id="grid-first-name" type="text" placeholder="Title" value={Title} onChange={(e) => { setName(e.target.value) }} />
                                                 </div>
-                                                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="UploadImage">
+                                            </div>
+
+                                            <div className="flex flex-wrap -mx-3 mb-2">
+                                                <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-city">
+                                                        Description
+                                                    </label>
+                                                    <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 
+            leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-city" type="text" placeholder="Description"
+                                                        value={Description} onChange={(e) => { setDescription(e.target.value) }} />
+                                                </div>
+                                                <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-city">
                                                         Upload Image
                                                     </label>
                                                     <input className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none 
-            dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="UploadImage" type="file" name="file"
+            dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file" name="file"
                                                         onChange={(event) => handleFileChange(event)} />
                                                 </div>
-                                            </div>
-                                            <div className="flex flex-wrap -mx-3 mb-1.5">
-                                                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-first-name">
-                                                        Studio
-                                                    </label>
-                                                    <input className="appearance-none block w-full bg-gray-200 text-gray-700
-             border border-gray-200  rounded py-3 px-4 mb-3 leading-tight focus:outline-none 
-             focus:border-gray-500" id="grid-Studio-name" type="text" placeholder="Studio Name" value={Studio} onChange={(e) => { setStudio(e.target.value) }} />
-                                                </div>
-                                                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-first-name">
-                                                        day
-                                                    </label>
-                                                    <input className="appearance-none block w-full bg-gray-200 text-gray-700
-             border border-gray-200  rounded py-3 px-4 mb-3 leading-tight focus:outline-none 
-             focus:border-gray-500" id="grid-day-name" type="text" placeholder="day" value={day} onChange={(e) => { setday(e.target.value) }} />
-                                                </div>
-                                            </div>
-                                            <div className="flex flex-wrap -mx-3 mb-1.5">
-                                                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-first-name">
-                                                        Time
-                                                    </label>
-                                                    <input className="appearance-none block w-full bg-gray-200 text-gray-700
-             border border-gray-200  rounded py-3 px-4 mb-3 leading-tight focus:outline-none 
-             focus:border-gray-500" id="grid-Time-name" type="text" placeholder="Studio Name" value={Time} onChange={(e) => { setTime(e.target.value) }} />
-                                                </div>
-                                                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-first-name">
-                                                        Episode
-                                                    </label>
-                                                    <input className="appearance-none block w-full bg-gray-200 text-gray-700
-             border border-gray-200  rounded py-3 px-4 mb-3 leading-tight focus:outline-none 
-             focus:border-gray-500" id="grid-Episode-name" type="text" placeholder="day" value={Episode} onChange={(e) => { setEpisode(e.target.value) }} />
-                                                </div>
-                                            </div>
-                                            <div className="flex flex-wrap -mx-3 mb-1.5">
-                                                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-first-name">
-                                                        Season
-                                                    </label>
-                                                    <input className="appearance-none block w-full bg-gray-200 text-gray-700
-             border border-gray-200  rounded py-3 px-4 mb-3 leading-tight focus:outline-none 
-             focus:border-gray-500" id="grid-Season-name" type="text" placeholder="Studio Name" value={Season} onChange={(e) => { setSeason(e.target.value) }} />
-                                                </div>
-                                                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-first-name">
-                                                        SeasonType(Next/Prev)
-                                                    </label>
-                                                    <input className="appearance-none block w-full bg-gray-200 text-gray-700
-             border border-gray-200  rounded py-3 px-4 mb-3 leading-tight focus:outline-none 
-             focus:border-gray-500" id="grid-SeasonType-name" type="text" placeholder="day" value={SeasonType} onChange={(e) => { setSeasonType(e.target.value) }} />
-                                                </div>
-                                            </div>
-
-                                            <div className="flex flex-wrap -mx-3 mb-1.5">
-                                                <div className="w-full  px-3 mb-6 md:mb-0">
-                                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="Description">
-                                                        Description
-                                                    </label>
-                                                    <textarea className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 
-            leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="Description" type="text" placeholder="Description"
-                                                        value={Description} onChange={(e) => { setDescription(e.target.value) }} />
-                                                </div>
-
                                             </div>
                                             <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
                                                 <button
@@ -241,7 +165,7 @@ export default function Home() {
                 ) : null}
 
             </div>
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-4 sm:grid-cols-2  w-full">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-4 sm:grid-cols-2 w-full ">
                 {
                     isLoading !== false ? <h1>Loading...</h1> :
                         data.query

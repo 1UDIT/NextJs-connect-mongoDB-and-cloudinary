@@ -1,12 +1,18 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-        domains: ['res.cloudinary.com']
+        remotePatterns: [
+            {
+              protocol: 'https',
+              hostname: 'res.cloudinary.com',
+              pathname: '**',
+            },
+          ],
     },
     env: {
         BASE_Login: process.env.userLogin,
         BASE_passWord: process.env.passWord,
-        BASE_URL: process.env.NEXTAUTH_URL, 
+        // BASE_URL: process.env.NEXTAUTH_URL, 
       }
 }
 
