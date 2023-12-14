@@ -10,7 +10,8 @@ export async function middleware(request) {
     // const isPublicPath = path === '/';
     // const ishomePath = path === '/homePage';
     
-    const token = request.cookies.get(process.env.CookiesSet)?.value || request.cookies.get('next-auth.session-token')?.value  
+    const token = request.cookies.get(process.env.CookiesSet)?.value || request.cookies.get('next-auth.session-token')?.value 
+    console.log(token,'token');
 
     if ((request.nextUrl.pathname.startsWith('/HomePage') || request.nextUrl.pathname.startsWith('/List')) && token === undefined) {
         return NextResponse.redirect(new URL('/', request.nextUrl))
