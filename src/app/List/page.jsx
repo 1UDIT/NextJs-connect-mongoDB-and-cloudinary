@@ -6,7 +6,9 @@ import axios from "axios";
 import useSWR from "swr";
 import styles from "@/css/style.css";
 import Image from "next/image";
+import DatePicker from "react-datepicker";
 
+import "react-datepicker/dist/react-datepicker.css";
 
 
 
@@ -20,9 +22,10 @@ export default function Home() {
     const [Time, setTime] = useState('');
     const [Episode, setEpisode] = useState('');
     const [filePath, setfilePath] = useState();
-    const [Season, setSeason] = useState();
-    const [SeasonType, setSeasonType] = useState();
+    const [Season, setSeason] = useState('');
+    const [SeasonType, setSeasonType] = useState('');
     const [data, setData] = useState();
+    const [startDate, setDate] = useState(new Date());
     const [isLoading, setLoading] = useState(true);
 
 
@@ -44,14 +47,7 @@ export default function Home() {
             });
         }
         Apicaller();
-    }, [])
-
-
-    //   const { data, error, isLoading } = useSWR(
-    //     `/api/data/weeklyTreading`,
-    //     fetcher
-    //   );
-
+    }, []) 
 
     const deleteList = (Id) => {
         console.log(Id);
@@ -83,13 +79,17 @@ export default function Home() {
     };
 
     const submitData = async (event) => {
+        const selectedDate = new Date(startDate)
+        var date = selectedDate.toLocaleString('default', { month: 'short' }) + " " + selectedDate.getDate() + "," + selectedDate.getFullYear();
+
         event.preventDefault();
         const base64 = await convertToBase64(filePath);
         var bodyFormData = new FormData();
         bodyFormData.append('title', Title);
         bodyFormData.append('profile_img', base64);
         bodyFormData.append('description', Description);
-        bodyFormData.append('day', dayset);
+        bodyFormData.append('day', day);
+        bodyFormData.append('date', date);
         bodyFormData.append('Time', Time);
         bodyFormData.append('Studio', Studio);
         bodyFormData.append('Season', Season);
@@ -111,8 +111,6 @@ export default function Home() {
             console.log("Error In Post Data getItems", error);
         });
     }
-
-
 
     return (
         <main className="flex   flex-col items-center justify-between">
@@ -137,15 +135,15 @@ export default function Home() {
                                                         Title
                                                     </label>
                                                     <input className="appearance-none block w-full bg-gray-200 text-gray-700
-             border border-gray-200  rounded py-3 px-4 mb-3 leading-tight focus:outline-none 
-             focus:border-gray-500" id="grid-first-name" type="text" placeholder="Title" value={Title} onChange={(e) => { setName(e.target.value) }} />
+                                                       border border-gray-200  rounded py-3 px-4 mb-3 leading-tight focus:outline-none 
+                                                       focus:border-gray-500" id="grid-first-name" type="text" placeholder="Title" value={Title} onChange={(e) => { setName(e.target.value) }} />
                                                 </div>
                                                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                                                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="UploadImage">
                                                         Upload Image
                                                     </label>
                                                     <input className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none 
-            dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="UploadImage" type="file" name="file"
+                                                        dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="UploadImage" type="file" name="file"
                                                         onChange={(event) => handleFileChange(event)} />
                                                 </div>
                                             </div>
@@ -155,16 +153,16 @@ export default function Home() {
                                                         Studio
                                                     </label>
                                                     <input className="appearance-none block w-full bg-gray-200 text-gray-700
-             border border-gray-200  rounded py-3 px-4 mb-3 leading-tight focus:outline-none 
-             focus:border-gray-500" id="grid-Studio-name" type="text" placeholder="Studio Name" value={Studio} onChange={(e) => { setStudio(e.target.value) }} />
+                                                      border border-gray-200  rounded py-3 px-4 mb-3 leading-tight focus:outline-none 
+                                                      focus:border-gray-500" id="grid-Studio-name" type="text" placeholder="Studio Name" value={Studio} onChange={(e) => { setStudio(e.target.value) }} />
                                                 </div>
                                                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                                                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-first-name">
                                                         day
                                                     </label>
                                                     <input className="appearance-none block w-full bg-gray-200 text-gray-700
-             border border-gray-200  rounded py-3 px-4 mb-3 leading-tight focus:outline-none 
-             focus:border-gray-500" id="grid-day-name" type="text" placeholder="day" value={day} onChange={(e) => { setday(e.target.value) }} />
+                                                      border border-gray-200  rounded py-3 px-4 mb-3 leading-tight focus:outline-none 
+                                                      focus:border-gray-500" id="grid-day-name" type="text" placeholder="day" value={day} onChange={(e) => { setday(e.target.value) }} />
                                                 </div>
                                             </div>
                                             <div className="flex flex-wrap -mx-3 mb-1.5">
@@ -173,16 +171,16 @@ export default function Home() {
                                                         Time
                                                     </label>
                                                     <input className="appearance-none block w-full bg-gray-200 text-gray-700
-             border border-gray-200  rounded py-3 px-4 mb-3 leading-tight focus:outline-none 
-             focus:border-gray-500" id="grid-Time-name" type="text" placeholder="Studio Name" value={Time} onChange={(e) => { setTime(e.target.value) }} />
+                                                        border border-gray-200  rounded py-3 px-4 mb-3 leading-tight focus:outline-none 
+                                                        focus:border-gray-500" id="grid-Time-name" type="text" placeholder="Studio Name" value={Time} onChange={(e) => { setTime(e.target.value) }} />
                                                 </div>
                                                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                                                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-first-name">
                                                         Episode
                                                     </label>
                                                     <input className="appearance-none block w-full bg-gray-200 text-gray-700
-             border border-gray-200  rounded py-3 px-4 mb-3 leading-tight focus:outline-none 
-             focus:border-gray-500" id="grid-Episode-name" type="text" placeholder="day" value={Episode} onChange={(e) => { setEpisode(e.target.value) }} />
+                                                        border border-gray-200  rounded py-3 px-4 mb-3 leading-tight focus:outline-none 
+                                                        focus:border-gray-500" id="grid-Episode-name" type="text" placeholder="day" value={Episode} onChange={(e) => { setEpisode(e.target.value) }} />
                                                 </div>
                                             </div>
                                             <div className="flex flex-wrap -mx-3 mb-1.5">
@@ -191,16 +189,26 @@ export default function Home() {
                                                         Season
                                                     </label>
                                                     <input className="appearance-none block w-full bg-gray-200 text-gray-700
-             border border-gray-200  rounded py-3 px-4 mb-3 leading-tight focus:outline-none 
-             focus:border-gray-500" id="grid-Season-name" type="text" placeholder="Studio Name" value={Season} onChange={(e) => { setSeason(e.target.value) }} />
+                                                        border border-gray-200  rounded py-3 px-4 mb-3 leading-tight focus:outline-none 
+                                                        focus:border-gray-500" id="grid-Season-name" type="text" placeholder="Studio Name" value={Season} onChange={(e) => { setSeason(e.target.value) }} />
                                                 </div>
                                                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                                                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-first-name">
                                                         SeasonType(Next/Prev)
                                                     </label>
                                                     <input className="appearance-none block w-full bg-gray-200 text-gray-700
-             border border-gray-200  rounded py-3 px-4 mb-3 leading-tight focus:outline-none 
-             focus:border-gray-500" id="grid-SeasonType-name" type="text" placeholder="day" value={SeasonType} onChange={(e) => { setSeasonType(e.target.value) }} />
+                                                        border border-gray-200  rounded py-3 px-4 mb-3 leading-tight focus:outline-none 
+                                                        focus:border-gray-500" id="grid-SeasonType-name" type="text" placeholder="day" value={SeasonType} onChange={(e) => { setSeasonType(e.target.value) }} />
+                                                </div>
+                                            </div>
+                                            <div className="flex flex-wrap -mx-3 mb-1.5">
+                                                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-first-name">
+                                                        Date
+                                                    </label>
+                                                    <DatePicker className="appearance-none block w-full bg-gray-200 text-gray-700
+                                                        border border-gray-200  rounded py-3 px-4 mb-3 leading-tight focus:outline-none 
+                                                        focus:border-gray-500" id="grid-Season-name" dateFormat="d,MMMM,yyyy" selected={startDate} onChange={(date) => { setDate(date) }} />
                                                 </div>
                                             </div>
 
@@ -210,7 +218,7 @@ export default function Home() {
                                                         Description
                                                     </label>
                                                     <textarea className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 
-            leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="Description" type="text" placeholder="Description"
+                                                        leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="Description" type="text" placeholder="Description"
                                                         value={Description} onChange={(e) => { setDescription(e.target.value) }} />
                                                 </div>
 

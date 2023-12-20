@@ -19,10 +19,15 @@ const Scheduler = new Schema({
     },
     day: {
         type: String,
-        enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'null'],
-        required: true
+        enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+        required: true,
+        default: 'Monday'
     },
     Time: {
+        type: String,
+        required: true
+    },
+    date: {
         type: String,
         required: true
     },

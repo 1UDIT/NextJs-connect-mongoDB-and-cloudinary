@@ -135,8 +135,7 @@ export async function POST(req) {
                 let body = Object.fromEntries(formData);
                 const result = await cloudinary.uploader.upload(body.profile_img, {
                     folder: 'weekly'
-                });
-                console.log("body", body.title, "body.file.path", result.secure_url, result.public_id);
+                }); 
                 const cloudinary_id = result.public_id;
                 try {
                     const newTask = new SchedulerTime({
@@ -146,6 +145,7 @@ export async function POST(req) {
                         description: body.description,
                         day: body.day,
                         Time: body.Time,
+                        date: body.date,
                         Studio: body.Studio,
                         Season: body.Season,
                     });
