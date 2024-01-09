@@ -8,11 +8,12 @@ export const authOptions = {
             name: 'Credentials',
 
             credentials: {
-                username: { label: 'test', type: 'email' },
-                password: { label: 'test', type: 'password' },
+                username: { label: 'username', type: 'UserName' },
+                password: { label: 'password', type: 'password' },
             },
             async authorize(credentials, req) {
-                const user = { id: 1, name: 'Admin', password: 'test' }; 
+                const user = { id: 1, name: 'Admin', password: 'test' };
+                console.log('login', process.env.BASE_Login, credentials, "us", process.env.BASE_Login === credentials.username)
                 if (process.env.BASE_Login === credentials.username && process.env.BASE_passWord === credentials.password) {
                     return {
                         id: user.id,

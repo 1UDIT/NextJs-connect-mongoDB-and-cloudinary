@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/app/dbConfig/dbConfig";
 import cloudinary from "@/app/cloudinary Database/index";
-import SchedulerTime from "@/app/models/AnimeScheduler";
+import MovieModel from "@/app/models/MovieModal";
 
 
 export async function GET(req) {
@@ -14,7 +14,7 @@ export async function GET(req) {
                 let { db } = await connectToDatabase();
 
                 let posts = await db
-                    .collection('schedules')
+                    .collection('MovieLists')
                     .find({})
                     .sort({ published: -1 })
                     .toArray();
@@ -73,7 +73,7 @@ export async function DELETE(req) {
                 try {
 
                     let posts = await db
-                        .collection('schedules')
+                        .collection('MovieLists')
                         .deleteOne({ 'cloudinary_id': { '$in': [body.id] } });
 
                     if (posts.deletedCount === 1) {
@@ -131,26 +131,22 @@ export async function POST(req) {
             try {
                 // connect to the database
                 let { db } = await connectToDatabase();
-                let formData = await req.formData();
-                let body = Object.fromEntries(formData);
-                const result = await cloudinary.uploader.upload(body.profile_img, {
-                    folder: 'weekly'
-                }); 
+                let formData = await req.formData(); 
+                let body = Object.fromEntries(formData); 
+                const result = await cloudinary.uploader.upload(body.profile_img); 
                 const cloudinary_id = result.public_id;
                 try {
-                    const newTask = new SchedulerTime({
+                    const newTask = new MovieModel({
                         title: body.title,
                         profile_img: result.secure_url,
                         cloudinary_id: result.public_id,
                         description: body.description,
-                        day: body.day,
-                        Time: body.Time,
-                        date: body.date,
                         Studio: body.Studio,
-                        Season: body.Season,
-                        SeasonType:body.SeasonType
+                        category: body.category,
+                        Streaming: body.Streaming,
+                        type: body.type,
                     });
-                    let myPost = await db.collection("schedules").insertOne(newTask);
+                    let myPost = await db.collection("MovieLists").insertOne(newTask); 
                     // return the posts
                     return NextResponse.json(
                         {
@@ -158,7 +154,7 @@ export async function POST(req) {
                         },
                         {
                             status: '201',
-                            headers: {
+                            headers: { 
                                 'content-type': 'application/json',
                                 'cache-control': 'public, max-age=315360, immutable',
                             },

@@ -22,6 +22,11 @@ const routes = [
         name: "NewsList",
         priority: '3'
     },
+    {
+        path: "/Movie",
+        name: "MovieList",
+        priority: '4'
+    },
 ];
 
 const NavBar = () => {

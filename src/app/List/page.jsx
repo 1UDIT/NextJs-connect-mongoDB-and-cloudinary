@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 import styles from "@/css/style.css";
 import Image from "next/image";
 import DatePicker from "react-datepicker";
@@ -67,7 +67,7 @@ export default function Home() {
 
         }).then(response => {
             console.log("getItems response:-", response.data.message, "Delete");
-
+            mutate();
             // setData(response.data.Items);
         }).catch(error => {
             console.log("Error In Post Data getItems", error);
@@ -107,6 +107,7 @@ export default function Home() {
         }).then(response => {
             console.log("getItems response:-", response.data, "done");
             // setData(response.data.Items);
+            mutate();
         }).catch(error => {
             console.log("Error In Post Data getItems", error);
         });

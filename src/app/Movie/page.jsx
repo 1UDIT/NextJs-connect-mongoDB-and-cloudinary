@@ -24,15 +24,19 @@ const fetcher = async (url) => {
 
 
 export default function Home() {
-
     const [showModal, setShowModal] = useState(false);
     const [Title, setName] = useState('');
     const [Description, setDescription] = useState('');
+    const [Studio, setStudio] = useState('');
+    const [category, setcategory] = useState('');
+    const [type, setType] = useState('');
+    const [Streaming, setStreaming] = useState('');
     const [filePath, setfilePath] = useState();
 
 
+
     const { data, error, isLoading } = useSWR(
-        `api/data/News`,
+        `api/data/movieList`,
         fetcher
     );
 
@@ -46,7 +50,7 @@ export default function Home() {
 
         axios({
             method: 'delete',
-            url: `api/data/News`,
+            url: `api/data/movieList`,
             data: bodyFormData,
             auth: {
                 username: process.env.BASE_Login,
@@ -54,9 +58,7 @@ export default function Home() {
             }
 
         }).then(response => {
-            console.log("getItems response:-", response.data.message, "Delete");
             mutate();
-            // setData(response.data.Items);
         }).catch(error => {
             console.log("Error In Post Data getItems", error);
         });
@@ -67,16 +69,20 @@ export default function Home() {
     };
 
     const submitData = async (event) => {
-        event.preventDefault(); 
+        event.preventDefault();
         const base64 = await convertToBase64(filePath);
         var bodyFormData = new FormData();
         bodyFormData.append('title', Title);
         bodyFormData.append('profile_img', base64);
         bodyFormData.append('description', Description);
+        bodyFormData.append('category', category);
+        bodyFormData.append('Streaming', Streaming);
+        bodyFormData.append('Studio', Studio);
+        bodyFormData.append('type', type);
 
         axios({
             method: 'post',
-            url: `api/data/News`,
+            url: `api/data/movieList`,
             data: bodyFormData,
             auth: {
                 username: process.env.BASE_Login,
@@ -85,7 +91,7 @@ export default function Home() {
 
         }).then(response => {
             console.log("getItems response:-", response.data, "done");
-            // setData(response.data.Items);
+            // setData(response.data.Items); 
             mutate();
         }).catch(error => {
             console.log("Error In Post Data getItems", error);
@@ -110,35 +116,71 @@ export default function Home() {
                             <div className="relative w-auto my-6 mx-auto max-w-3xl">
                                 <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                                     <div className="relative p-6 flex-auto">
-                                        <form className="w-full max-w-lg">
-                                            <div className="flex flex-wrap -mx-3 mb-6">
+                                        <form className="w-full max-w-sm ">
+                                            <div className="flex flex-wrap -mx-3 mb-1.5">
                                                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                                                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-first-name">
                                                         Title
                                                     </label>
                                                     <input className="appearance-none block w-full bg-gray-200 text-gray-700
-             border border-gray-200  rounded py-3 px-4 mb-3 leading-tight focus:outline-none 
-             focus:border-gray-500" id="grid-first-name" type="text" placeholder="Title" value={Title} onChange={(e) => { setName(e.target.value) }} />
+                                                       border border-gray-200  rounded py-3 px-4 mb-3 leading-tight focus:outline-none 
+                                                       focus:border-gray-500" id="grid-first-name" type="text" placeholder="Title" value={Title} onChange={(e) => { setName(e.target.value) }} />
                                                 </div>
-                                            </div>
-
-                                            <div className="flex flex-wrap -mx-3 mb-2">
-                                                <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-city">
-                                                        Description
-                                                    </label>
-                                                    <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 
-            leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-city" type="text" placeholder="Description"
-                                                        value={Description} onChange={(e) => { setDescription(e.target.value) }} />
-                                                </div>
-                                                <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-city">
+                                                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="UploadImage">
                                                         Upload Image
                                                     </label>
                                                     <input className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none 
-            dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file" name="file"
+                                                        dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="UploadImage" type="file" name="file"
                                                         onChange={(event) => handleFileChange(event)} />
                                                 </div>
+                                            </div>
+                                            <div className="flex flex-wrap -mx-3 mb-1.5">
+                                                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-first-name">
+                                                        Studio
+                                                    </label>
+                                                    <input className="appearance-none block w-full bg-gray-200 text-gray-700
+                                                      border border-gray-200  rounded py-3 px-4 mb-3 leading-tight focus:outline-none 
+                                                      focus:border-gray-500" id="grid-Studio-name" type="text" placeholder="Studio Name" value={Studio} onChange={(e) => { setStudio(e.target.value) }} />
+                                                </div>
+                                                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-first-name">
+                                                        type
+                                                    </label>
+                                                    <input className="appearance-none block w-full bg-gray-200 text-gray-700
+                                                      border border-gray-200  rounded py-3 px-4 mb-3 leading-tight focus:outline-none 
+                                                      focus:border-gray-500" id="grid-day-name" type="text" placeholder="Horror/Romance" value={type} onChange={(e) => { setType(e.target.value) }} />
+                                                </div>
+                                            </div>
+                                            <div className="flex flex-wrap -mx-3 mb-1.5">
+                                                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-first-name">
+                                                        category
+                                                    </label>
+                                                    <input className="appearance-none block w-full bg-gray-200 text-gray-700
+                                                        border border-gray-200  rounded py-3 px-4 mb-3 leading-tight focus:outline-none 
+                                                        focus:border-gray-500" id="grid-Episode-name" type="text" placeholder="Movie/Series" value={category} onChange={(e) => { setcategory(e.target.value) }} />
+                                                </div>
+                                                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-first-name">
+                                                        Streaming
+                                                    </label>
+                                                    <input className="appearance-none block w-full bg-gray-200 text-gray-700
+                                                        border border-gray-200  rounded py-3 px-4 mb-3 leading-tight focus:outline-none 
+                                                        focus:border-gray-500" id="grid-Episode-name" type="text" placeholder="Streaming Site" value={Streaming} onChange={(e) => { setStreaming(e.target.value) }} />
+                                                </div>
+                                            </div>
+                                            <div className="flex flex-wrap -mx-3 mb-1.5">
+                                                <div className="w-full  px-3 mb-6 md:mb-0">
+                                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="Description">
+                                                        Description
+                                                    </label>
+                                                    <textarea className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 
+                                                        leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="Description" type="text" placeholder="Description"
+                                                        value={Description} onChange={(e) => { setDescription(e.target.value) }} />
+                                                </div>
+
                                             </div>
                                             <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
                                                 <button
